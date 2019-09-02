@@ -1,0 +1,10 @@
+flake8
+pep8-naming
+pytest
+pytest-cov
+sphinx
+guzzle_sphinx_theme
+autoapi
+plantweb
+ipdb
+pdbpp

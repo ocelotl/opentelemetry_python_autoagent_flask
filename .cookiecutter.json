@@ -1,0 +1,11 @@
+{
+    "author": "Diego Hurtado",
+    "email": "diego.hurtado@toptal.com",
+    "repo_name": "opentelemetry_python_autoagent_flask",
+    "repo_url": "https://github.com/theteam/opentelemetry_python_autoagent_flask",
+    "doc_url": "https://opentelemetry_python_autoagent_flask.readthedocs.org/",
+    "project_name": "OpenTelemetry Python AutoAgent Flask Plugin",
+    "short_description": "Flask Plugin for the OpenTelemetry Python AutoAgent",
+    "year": "2019",
+    "version": "0.1.0"
+}
