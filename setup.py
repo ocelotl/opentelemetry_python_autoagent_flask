@@ -59,7 +59,9 @@ def find_requirements(filename):
 
 setup(
     name='opentelemetry_python_autoagent_flask',
-    version=find_version('lib/opentelemetry_python_autoagent_flask/__init__.py'),
+    version=find_version(
+        'lib/opentelemetry_python_autoagent_flask/__init__.py'
+    ),
     package_dir={'': 'lib'},
     packages=find_packages('lib'),
 
@@ -75,7 +77,6 @@ setup(
     long_description=read('README.rst'),
     url='https://opentelemetry_python_autoagent_flask.readthedocs.org/',
     keywords='opentelemetry_python_autoagent_flask',
-
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -86,5 +87,11 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-    ]
+    ],
+    entry_points={
+        'opentelemetry_python_autoagent_10': [
+            'flask = opentelemetry_python_autoagent_flask.plugin.flask:'
+            'FlaskPlugin'
+        ]
+    }
 )
