@@ -8,11 +8,11 @@ from opentracing.ext.tags import (
 )
 from opentelemetry_python_autoagent.plugin.base import BasePlugin
 
+# FIXME avoid a hard dependecy to a specific client
 from jaeger_client import Config
 import flask
 
-# FIXME using a private attribute here
-from flask import _request_ctx_stack
+from flask import request
 
 
 tracer = Config(
@@ -38,24 +38,20 @@ class FlaskPlugin(BasePlugin):
 
                 super(PatchedFlask, self).__init__(*args, **kwargs)
 
-                self._current_scopes = {}
+                self._current_scope = None
 
                 @self.before_request
                 def start_trace():
 
-                    headers = {}
-
-                    request = _request_ctx_stack.top.request
-
                     scope = tracer.start_active_span(
                         request.endpoint,
                         child_of=tracer.extract(
-                            Format.HTTP_HEADERS, headers
+                            Format.HTTP_HEADERS, request.headers
                         ),
                         tags={SPAN_KIND: SPAN_KIND_RPC_SERVER}
                     )
 
-                    self._current_scopes[request] = scope
+                    self._current_scope = scope
 
                     span = scope.span
 
@@ -69,15 +65,7 @@ class FlaskPlugin(BasePlugin):
                 @self.after_request
                 def end_trace(response):
 
-                    request = _request_ctx_stack.top.request
-
-                    scope = self._current_scopes.pop(request, None)
-
-                    if scope is None:
-
-                        return
-
-                    scope.close()
+                    self._current_scope.close()
 
                     print('after_request')
 
