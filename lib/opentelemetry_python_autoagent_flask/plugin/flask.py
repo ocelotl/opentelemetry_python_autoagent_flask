@@ -1,4 +1,4 @@
-from opentracing.propagation.Format import HTTP_HEADERS
+from opentracing.propagation import Format
 from opentracing.ext.tags import (
     SPAN_KIND,
     SPAN_KIND_RPC_SERVER,
@@ -32,8 +32,6 @@ class FlaskPlugin(BasePlugin):
 
     def monkeypatch(self):
 
-        print('monkeypatch')
-
         class PatchedFlask(flask.Flask):
 
             def __init__(self, *args, **kwargs):
@@ -51,7 +49,9 @@ class FlaskPlugin(BasePlugin):
 
                     scope = tracer.start_active_span(
                         request.endpoint,
-                        child_of=tracer.extract(HTTP_HEADERS, headers),
+                        child_of=tracer.extract(
+                            Format.HTTP_HEADERS, headers
+                        ),
                         tags={SPAN_KIND: SPAN_KIND_RPC_SERVER}
                     )
 
