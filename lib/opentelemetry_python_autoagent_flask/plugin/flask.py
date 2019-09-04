@@ -32,6 +32,13 @@ class FlaskPlugin(BasePlugin):
 
                     print('before_request')
 
+                @self.after_request
+                def end_trace(response):
+
+                    print('after_request')
+
+                    return response
+
         flask.Flask = PatchedFlask
 
 
